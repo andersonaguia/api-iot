@@ -7,16 +7,16 @@ import { NestResponseBuilder } from "src/core/http/nest-response-builder";
 export class ThermistorsController {
   constructor(private readonly thermistorsService: ThermistorsService) {}
 
-  @Post("/addvalue")
-  async addValue(@Body() data: ThermistorValueDto) {
+  @Post("/add")
+  async add(@Body() data: ThermistorValueDto) {
     try {
-      const result = await this.thermistorsService.addValue(data);
+      const result = await this.thermistorsService.addThermistor(data);
       if (result) {
         return new NestResponseBuilder()
           .withStatus(HttpStatus.CREATED)
           .withBody({
             statusCode: HttpStatus.CREATED,
-            message: "Dados inseridos com sucesso",
+            message: "Sensor cadastrado com sucesso",
           })
           .build();
       } else {

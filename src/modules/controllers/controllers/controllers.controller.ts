@@ -17,7 +17,7 @@ export class ControllersController {
   constructor(private readonly controllersService: ControllersService) {}
 
   @Post("/create")
-  async signUp(@Body(ValidationPipe) controllerData: CreateControllerDto) {
+  async create(@Body(ValidationPipe) controllerData: CreateControllerDto) {
     try {
       const result = await this.controllersService.create(controllerData);
       if (result.id) {

@@ -11,17 +11,25 @@ export class ThermistorsService {
     private readonly deviceService: ControllersService
   ) {}
 
-  addValue(thermistorData: ThermistorValueDto): Promise<ThermistorsEntity> {
+  addThermistor(thermistorData: ThermistorValueDto): Promise<ThermistorsEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const { controllerId, temperature } = thermistorData;
+        const { controllerId, controllerPort, location, manufacturer, maxRange, minRange, model, nominalResistance, serialNumber, voltageDividerResistance } = thermistorData;
         const controller = await this.deviceService.findById(+controllerId);
 
         const thermistor = new ThermistorsEntity();
-        //thermistor.value = temperature;
         thermistor.controller = controller;
+        thermistor.controllerPort = controllerPort;
+        thermistor.location = location;
+        thermistor.manufacturer = manufacturer;
+        thermistor.maxRange = maxRange;
+        thermistor.minRange = minRange;
+        thermistor.model = model;
+        thermistor.nominalResistance = nominalResistance;
+        thermistor.serialNumber = serialNumber;
+        thermistor.voltageDividerResistance = voltageDividerResistance;
 
-        const thermistorSaved = await this.thermistorsRepository.addValue(
+        const thermistorSaved = await this.thermistorsRepository.addThermistor(
           thermistor
         );
         

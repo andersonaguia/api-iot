@@ -9,11 +9,11 @@ export class ThermistorsRepository extends Repository<ThermistorsEntity> {
     super(ThermistorsEntity, dataSource.createEntityManager());
   }
 
-  addValue(thermistorData: ThermistorsEntity): Promise<ThermistorsEntity> {
+  addThermistor(thermistorData: ThermistorsEntity): Promise<ThermistorsEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const thermistorValue = await this.save(thermistorData);
-        resolve(thermistorValue);
+        const thermistor = await this.save(thermistorData);
+        resolve(thermistor);
       } catch (error) {
         reject(error);
       }

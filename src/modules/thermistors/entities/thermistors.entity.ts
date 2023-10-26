@@ -38,7 +38,7 @@ export class ThermistorsEntity extends BaseEntity {
   })
   voltageDividerResistance: number;
 
-  @Column({ length: 30, nullable: false })
+  @Column({ length: 30, nullable: false, unique: true })
   serialNumber: string;
 
   @ManyToOne(() => ControllersEntity, { nullable: false })
