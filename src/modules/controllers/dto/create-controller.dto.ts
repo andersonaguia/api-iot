@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString } from "class-validator";
 import { ConnectionType } from "../enum/connection.type";
 
-export class CreateDeviceDto {
+export class CreateControllerDto {
   @IsNotEmpty({ message: "Obrigatório informar o nome" })
   @IsString({ message: "Nome deve ser uma string" })
   readonly name: string;

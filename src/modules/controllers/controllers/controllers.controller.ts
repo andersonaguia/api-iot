@@ -9,17 +9,17 @@ import {
   ValidationPipe,
 } from "@nestjs/common";
 import { NestResponseBuilder } from "src/core/http/nest-response-builder";
-import { DevicesService } from "../services/devices.service";
-import { CreateDeviceDto } from "../dto/create-device.dto";
+import { ControllersService } from "../services/controllers.service";
+import { CreateControllerDto } from "../dto/create-controller.dto";
 
-@Controller("devices")
-export class DevicesController {
-  constructor(private readonly devicesService: DevicesService) {}
+@Controller("controllers")
+export class ControllersController {
+  constructor(private readonly controllersService: ControllersService) {}
 
   @Post("/create")
-  async signUp(@Body(ValidationPipe) deviceData: CreateDeviceDto) {
+  async signUp(@Body(ValidationPipe) controllerData: CreateControllerDto) {
     try {
-      const result = await this.devicesService.create(deviceData);
+      const result = await this.controllersService.create(controllerData);
       if (result.id) {
         return new NestResponseBuilder()
           .withStatus(HttpStatus.CREATED)
@@ -62,7 +62,7 @@ export class DevicesController {
   @Get("/findbyip")
   async findByIp(@Query("ipAddress") ipAddress: string) {
     try {
-      const result = await this.devicesService.findByIpAddress(ipAddress);
+      const result = await this.controllersService.findByIpAddress(ipAddress);
 
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)
@@ -94,7 +94,7 @@ export class DevicesController {
   @Get("/findbymac")
   async findByMac(@Query("macAddress") macAddress: string) {
     try {
-      const result = await this.devicesService.findByMacAddress(macAddress);
+      const result = await this.controllersService.findByMacAddress(macAddress);
 
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)
@@ -126,7 +126,7 @@ export class DevicesController {
   @Get("/findbyid/:id")
   async findById(@Param("id") id: number) {
     try {
-      const result = await this.devicesService.findById(+id);
+      const result = await this.controllersService.findById(+id);
 
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)

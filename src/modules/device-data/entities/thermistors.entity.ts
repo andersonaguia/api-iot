@@ -1,5 +1,5 @@
 import { BaseEntity } from "src/core/entities";
-import { DeviceEntity } from "src/modules/devices/entities/device.entity";
+import { ControllersEntity } from "src/modules/controllers/entities/controllers.entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity({ name: "thermistors" })
@@ -11,7 +11,7 @@ export class ThermistorsEntity extends BaseEntity {
   })
   value: number;
 
-  @ManyToOne(() => DeviceEntity, { nullable: false })
-  @JoinColumn({ name: "device_id" })
-  device: DeviceEntity;
+  @ManyToOne(() => ControllersEntity, { nullable: false })
+  @JoinColumn({ name: "controllerId" })
+  controller: ControllersEntity;
 }

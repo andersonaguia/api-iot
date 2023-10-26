@@ -2,10 +2,10 @@ import { Module, forwardRef } from "@nestjs/common";
 import { ThermistorsRepository } from "./thermistors.repository";
 import { ThermistorsService } from "./services/thermistors.service";
 import { ThermistorsController } from "./controllers/thermistors.controller";
-import { DevicesModule } from "../devices/devices.module";
+import { ControllersModule } from "../controllers/controllers.module";
 
 @Module({
-  imports: [forwardRef(() => DevicesModule)],
+  imports: [ControllersModule],
   controllers: [ThermistorsController],
   providers: [ThermistorsService, ThermistorsRepository],
 })

@@ -1,6 +1,6 @@
 import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import { ThermistorValueDto } from "../dto/thermistor-value.dto";
-import { DevicesService } from "../../devices/services/devices.service";
+import { ControllersService } from "../../controllers/services/controllers.service";
 import { ThermistorsEntity } from "../entities/thermistors.entity";
 import { ThermistorsRepository } from "../thermistors.repository";
 
@@ -8,19 +8,18 @@ import { ThermistorsRepository } from "../thermistors.repository";
 export class ThermistorsService {
   constructor(
     private readonly thermistorsRepository: ThermistorsRepository,
-    @Inject(forwardRef(() => DevicesService))
-    private readonly deviceService: DevicesService
+    private readonly deviceService: ControllersService
   ) {}
 
   addValue(thermistorData: ThermistorValueDto): Promise<ThermistorsEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const { deviceId, temperature } = thermistorData;
-        const device = await this.deviceService.findById(+deviceId);
+        const { controllerId, temperature } = thermistorData;
+        const controller = await this.deviceService.findById(+controllerId);
 
         const thermistor = new ThermistorsEntity();
         thermistor.value = temperature;
-        thermistor.device = device;
+        thermistor.controller = controller;
 
         const thermistorSaved = await this.thermistorsRepository.addValue(
           thermistor
