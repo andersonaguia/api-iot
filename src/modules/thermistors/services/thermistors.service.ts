@@ -74,4 +74,26 @@ export class ThermistorsService {
       }
     });
   }
+
+  findById(id: number): Promise<ThermistorsEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const thermistor = await this.thermistorsRepository.findById(
+          +id
+        );
+
+        if (!thermistor) {
+          reject({
+            code: 404,
+            message:
+              "Nenhum termistor encontrado para o id informado",
+          });
+        } else {
+          resolve(thermistor);
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 }
