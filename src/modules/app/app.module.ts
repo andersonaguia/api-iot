@@ -8,6 +8,7 @@ import { dataSourceOptions } from "src/core/database/data-source";
 import { AuthModule } from "src/core/auth/auth.module";
 import { ThermistorsModule } from "../thermistors/thermistors.module";
 import { ControllersModule } from "../controllers/controllers.module";
+import { ThermistorDataModule } from "../thermistor-data/thermistor-data.module";
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -21,6 +22,7 @@ import { ControllersModule } from "../controllers/controllers.module";
     AuthModule,
     ControllersModule,
     ThermistorsModule,
+    ThermistorDataModule,
   ],
   controllers: [],
   providers: [],
