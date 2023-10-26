@@ -34,4 +34,19 @@ export class ThermistorsRepository extends Repository<ThermistorsEntity> {
       }
     });
   }
+
+  findById(id: number): Promise<ThermistorsEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const thermistor = await this.findOne({
+          where: {
+            id: +id,
+          },
+        });
+        resolve(thermistor);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 }
