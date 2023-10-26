@@ -6,7 +6,7 @@ import configuration from "src/common/env";
 import { join } from "path";
 import { dataSourceOptions } from "src/core/database/data-source";
 import { AuthModule } from "src/core/auth/auth.module";
-import { DeviceDataModule } from "../device-data/device-data.module";
+import { DeviceDataModule } from "../thermistors/device-data.module";
 import { ControllersModule } from "../controllers/controllers.module";
 @Module({
   imports: [

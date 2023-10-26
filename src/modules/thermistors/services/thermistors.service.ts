@@ -18,7 +18,7 @@ export class ThermistorsService {
         const controller = await this.deviceService.findById(+controllerId);
 
         const thermistor = new ThermistorsEntity();
-        thermistor.value = temperature;
+        //thermistor.value = temperature;
         thermistor.controller = controller;
 
         const thermistorSaved = await this.thermistorsRepository.addValue(
