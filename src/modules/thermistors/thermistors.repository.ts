@@ -19,4 +19,19 @@ export class ThermistorsRepository extends Repository<ThermistorsEntity> {
       }
     });
   }
+
+  findBySerialNumber(serialNumber: string): Promise<ThermistorsEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const thermistor = await this.findOne({
+          where: {
+            serialNumber: serialNumber,
+          },
+        });
+        resolve(thermistor);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 }

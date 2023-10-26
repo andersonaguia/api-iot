@@ -11,10 +11,23 @@ export class ThermistorsService {
     private readonly deviceService: ControllersService
   ) {}
 
-  addThermistor(thermistorData: ThermistorValueDto): Promise<ThermistorsEntity> {
+  addThermistor(
+    thermistorData: ThermistorValueDto
+  ): Promise<ThermistorsEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const { controllerId, controllerPort, location, manufacturer, maxRange, minRange, model, nominalResistance, serialNumber, voltageDividerResistance } = thermistorData;
+        const {
+          controllerId,
+          controllerPort,
+          location,
+          manufacturer,
+          maxRange,
+          minRange,
+          model,
+          nominalResistance,
+          serialNumber,
+          voltageDividerResistance,
+        } = thermistorData;
         const controller = await this.deviceService.findById(+controllerId);
 
         const thermistor = new ThermistorsEntity();
@@ -32,8 +45,30 @@ export class ThermistorsService {
         const thermistorSaved = await this.thermistorsRepository.addThermistor(
           thermistor
         );
-        
+
         resolve(thermistorSaved);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  findBySerialNumber(serialNumber: string): Promise<ThermistorsEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const thermistor = await this.thermistorsRepository.findBySerialNumber(
+          serialNumber
+        );
+
+        if (!thermistor) {
+          reject({
+            code: 404,
+            message:
+              "Nenhum termistor encontrado para o número serial informado",
+          });
+        } else {
+          resolve(thermistor);
+        }
       } catch (error) {
         reject(error);
       }
