@@ -1,7 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { DataSource, Repository } from "typeorm";
+import { Between, DataSource, Equal, Repository } from "typeorm";
 import { ThermistorDataEntity } from "./entities/thermistor-data.entity";
 import { InjectDataSource } from "@nestjs/typeorm";
+import { ThermistorsEntity } from "../thermistors/entities/thermistors.entity";
 
 @Injectable()
 export class ThermistorsDataRepository extends Repository<ThermistorDataEntity> {
@@ -21,4 +22,20 @@ export class ThermistorsDataRepository extends Repository<ThermistorDataEntity> 
       }
     });
   }
+
+  findActualValue(thermistor: number): Promise<ThermistorDataEntity[]> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const thermistorData = await this.find({
+          where: { thermistor: Equal(thermistor) },
+          relations: { thermistor: true },
+        });
+        resolve(thermistorData);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+
 }
