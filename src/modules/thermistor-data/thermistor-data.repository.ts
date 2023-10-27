@@ -2,7 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { Between, DataSource, Equal, Repository } from "typeorm";
 import { ThermistorDataEntity } from "./entities/thermistor-data.entity";
 import { InjectDataSource } from "@nestjs/typeorm";
-import { ThermistorsEntity } from "../thermistors/entities/thermistors.entity";
+import { FindValuesByDateDto } from "./dto/find-by-date.dto";
+import { format } from "date-fns";
 
 @Injectable()
 export class ThermistorsDataRepository extends Repository<ThermistorDataEntity> {
@@ -29,6 +30,8 @@ export class ThermistorsDataRepository extends Repository<ThermistorDataEntity> 
         const thermistorData = await this.find({
           where: { thermistor: Equal(thermistor) },
           relations: { thermistor: true },
+          order: { createdAt: "DESC" },
+          take: 1,
         });
         resolve(thermistorData);
       } catch (error) {
@@ -37,5 +40,27 @@ export class ThermistorsDataRepository extends Repository<ThermistorDataEntity> 
     });
   }
 
+  async findValuesByDate(data: FindValuesByDateDto): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { startDate, endDate, limit, page, thermistorId } = data;
 
+        const [results, total] = await this.findAndCount({
+          where: {
+            thermistor: Equal(thermistorId),
+            createdAt: Between(new Date(startDate), new Date(endDate)),
+          },
+          skip: (page - 1) * limit,
+          take: limit,
+        });
+
+        resolve({
+          total,
+          values: results,
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 }
