@@ -31,8 +31,31 @@ export class ThermistorDataService {
 
           const newThermistorData =
             await this.thermistorsDataRepository.addValue(thermistorData);
-            
+
           resolve(newThermistorData);
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  findActualValue(thermistorId: number): Promise<ThermistorDataEntity[]> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const thermistor = await this.thermistorsService.findById(
+          +thermistorId
+        );
+        if (!thermistor) {
+          reject({
+            code: 404,
+            message: "Nenhum termistor encontrado para o id informado",
+          });
+        } else {
+          const thermistorData =
+            await this.thermistorsDataRepository.findActualValue(thermistorId);
+
+          resolve(thermistorData);
         }
       } catch (error) {
         reject(error);
