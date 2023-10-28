@@ -1,4 +1,12 @@
-import { Body, Controller, Get, HttpStatus, Param, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Query,
+} from "@nestjs/common";
 import { ThermistorsService } from "../services/thermistors.service";
 import { ThermistorValueDto } from "../dto/thermistor-value.dto";
 import { NestResponseBuilder } from "src/core/http/nest-response-builder";
@@ -56,11 +64,15 @@ export class ThermistorsController {
     }
   }
 
-  @Get("/findbyserialnumber/:serialnumber")
-  async findBySerialNumber(@Param("serialnumber") serialNumber: string) {
+  @Get("/findbycontrollerport/")
+  async findByControllerPort(
+    @Query("controllerId") controllerId: number,
+    @Query("controllerPort") controllerPort: number
+  ) {
     try {
-      const result = await this.thermistorsService.findBySerialNumber(
-        serialNumber
+      const result = await this.thermistorsService.findByControllerPort(
+        +controllerId,
+        +controllerPort
       );
 
       return new NestResponseBuilder()

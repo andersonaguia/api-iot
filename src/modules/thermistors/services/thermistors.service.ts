@@ -25,14 +25,13 @@ export class ThermistorsService {
           minRange,
           model,
           nominalResistance,
-          serialNumber,
           voltageDividerResistance,
         } = thermistorData;
         const controller = await this.deviceService.findById(+controllerId);
 
         if (controller) {
           const thermistorExist =
-            await this.thermistorsRepository.findBySerialNumber(serialNumber);
+            await this.thermistorsRepository.findByControllerPort(+controllerId, +controllerPort);
 
           if (thermistorExist) {
             reject({
@@ -50,7 +49,6 @@ export class ThermistorsService {
             thermistor.minRange = minRange;
             thermistor.model = model;
             thermistor.nominalResistance = nominalResistance;
-            thermistor.serialNumber = serialNumber;
             thermistor.voltageDividerResistance = voltageDividerResistance;
 
             const thermistorSaved =
@@ -70,18 +68,15 @@ export class ThermistorsService {
     });
   }
 
-  findBySerialNumber(serialNumber: string): Promise<ThermistorsEntity> {
+  findById(id: number): Promise<ThermistorsEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const thermistor = await this.thermistorsRepository.findBySerialNumber(
-          serialNumber
-        );
+        const thermistor = await this.thermistorsRepository.findById(+id);
 
         if (!thermistor) {
           reject({
             code: 404,
-            message:
-              "Nenhum termistor encontrado para o número serial informado",
+            message: "Nenhum termistor encontrado para o id informado",
           });
         } else {
           resolve(thermistor);
@@ -92,15 +87,21 @@ export class ThermistorsService {
     });
   }
 
-  findById(id: number): Promise<ThermistorsEntity> {
+  findByControllerPort(
+    controllerId: number,
+    controllerPort: number
+  ): Promise<ThermistorsEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const thermistor = await this.thermistorsRepository.findById(+id);
-
+        const thermistor =
+          await this.thermistorsRepository.findByControllerPort(
+            +controllerId,
+            +controllerPort
+          );
         if (!thermistor) {
           reject({
             code: 404,
-            message: "Nenhum termistor encontrado para o id informado",
+            message: "Nenhum termistor encontrado",
           });
         } else {
           resolve(thermistor);

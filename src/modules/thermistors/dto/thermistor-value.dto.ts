@@ -28,17 +28,13 @@ export class ThermistorValueDto {
   )
   readonly voltageDividerResistance: number;
 
-  @IsNotEmpty({ message: "Campo serialNumber não pode ser vazio" })
-  @IsString({ message: "Campo serialNumber deve ser uma string" })
-  readonly serialNumber: string;
-
   @IsNotEmpty({ message: "Campo controllerId não pode ser vazio" })
   @IsNumber({}, { message: "Campo controllerId deve ser uma string" })
   readonly controllerId: number;
 
   @IsNotEmpty({ message: "Campo controllerPort não pode ser vazio" })
-  @IsString({ message: "Campo controllerPort deve ser uma string" })
-  readonly controllerPort: string;
+  @IsNumber({}, { message: "Campo controllerPort deve ser um number" })
+  readonly controllerPort: number;
 
   @IsNotEmpty({ message: "Campo location não pode ser vazio" })
   @IsString({ message: "Campo location deve ser uma string" })
