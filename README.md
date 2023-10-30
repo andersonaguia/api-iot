@@ -7,6 +7,28 @@
 
 # <p align="center">API-IOT</p>
 
+<<<<<<< HEAD
+## 💻 Sobre o projeto
+
+[ApiIot](https://github.com/andersonaguia/api-manutencoes) é uma API para cadastro de usuários e controle de dispositivos.
+
+## ⚙️ Funcionalidades
+
+- [x] Criar um usuário
+
+---
+
+## :construction: Pré-requisitos
+- Ter o [NodeJS](https://nodejs.org/en/) instalado na máquina;
+- Ter o [Postgres](https://www.postgresql.org/) instalado na máquina;
+#
+
+## :warning: Configuração da aplicação
+
+1) Criar um database no MySQL chamado `iot` para utilizar no projeto;
+2) Utilizar o comando `npm install` para instalar as dependências;
+3) Utilizar o `.env_example` como base para o `.env` e colocar as suas configurações;
+=======
 ## 🚀 Sobre o projeto
 
 `Api IOT` é uma API Rest para cadastro de usuários, controle e obtenção de dados de dispositivos previamente cadastrados no sistema.
@@ -31,6 +53,7 @@
 1) Criar um database no MySQL chamado `automation` para utilizar no projeto;
 2) Utilizar o comando `npm install` para instalar as dependências;
 3) Utilizar o `.env_example` como base para o `.env` e inserir as suas configurações;
+>>>>>>> develop
 4) Utilizar o comando `npm run migration:run` para criar as tabelas após a configuração das variáveis de ambiente no passo 3
 5) Utilizar o comando `npm run start:dev` para executar a aplicação no ambiente de desenvolvimento.
 
@@ -38,6 +61,11 @@
 ## 💻 Acessando as rotas da aplicação
 
 ## Endpoints disponíveis
+<<<<<<< HEAD
+### Criar um responsável pela manutenção
+```
+POST: http://localhost:3000/users/create
+=======
 
 ### 🔓 Criar um usuário
 
@@ -53,10 +81,14 @@ USER = "user"
 
 ```
 POST: http://localhost:3001/auth/signup
+>>>>>>> develop
 Headers: {
 	"Content-Type": "application/json"
 }
 Body: {  
+<<<<<<< HEAD
+	"responsible": "Anderson"
+=======
 	"fullName": "My Name",
 	"email": "my_email@email.com",
 	"password": "aA123@456!",
@@ -91,11 +123,22 @@ Headers: {
 Body: {  
 	"email": "my_email@email.com",
 	"password": "aA123@456!"	
+>>>>>>> develop
 }
 ```
 **Resultado:**
 ```
 {
+<<<<<<< HEAD
+	"responsible": "ANDERSON",
+	"created_at": "2023-02-03T00:56:36.985Z",
+	"updated_at": "2023-02-03T00:56:36.985Z",
+	"id": 1
+}
+``` 
+
+#
+=======
 	"status": 200,
 	"headers": {},
 	"body": {
@@ -165,6 +208,7 @@ Body: {
 }
 ```
 
+>>>>>>> develop
 
 ## 🛠 Tecnologias
 
@@ -185,6 +229,11 @@ https://img.shields.io/badge/Insomnia-5849be?style=for-the-badge&logo=Insomnia&l
 
 [![Mysql Badge](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
 
+<<<<<<< HEAD
+[![AmazonAWSBadge](https://img.shields.io/badge/Amazon_AWS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)](https://aws.amazon.com/)
+
+=======
+>>>>>>> develop
 
 ## 🦸 Autor
  <b>Anderson Aguiar</b>🚀
@@ -193,7 +242,13 @@ https://img.shields.io/badge/Insomnia-5849be?style=for-the-badge&logo=Insomnia&l
 
 ---
 
+<<<<<<< HEAD
+## 📝 Licença
+
+Este projeto está sob a licença [MIT](./LICENSE).
+=======
 ## ©️ Licença
 
 Este projeto está sob a licença [MIT](./LICENSE).
 
+>>>>>>> develop

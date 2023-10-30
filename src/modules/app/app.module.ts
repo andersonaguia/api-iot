@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+import { Module } from '@nestjs/common';
+
+@Module({
+  imports: [],
+=======
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { ServeStaticModule } from "@nestjs/serve-static";
@@ -24,6 +30,7 @@ import { ThermistorDataModule } from "../thermistor-data/thermistor-data.module"
     ThermistorsModule,
     ThermistorDataModule,
   ],
+>>>>>>> develop
   controllers: [],
   providers: [],
 })
