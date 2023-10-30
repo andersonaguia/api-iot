@@ -1,63 +1,63 @@
 import { DataSource, Equal, Repository } from "typeorm";
-import { DeviceEntity } from "./entities/device.entity";
+import { ControllersEntity } from "./entities/controllers.entity";
 import { InjectDataSource } from "@nestjs/typeorm";""
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
-export class DevicesRepository extends Repository<DeviceEntity> {
+export class ControllersRepository extends Repository<ControllersEntity> {
   constructor(@InjectDataSource() dataSource: DataSource) {
-    super(DeviceEntity, dataSource.createEntityManager());
+    super(ControllersEntity, dataSource.createEntityManager());
   }
 
-  addDevice(device: DeviceEntity): Promise<DeviceEntity> {
+  addController(controller: ControllersEntity): Promise<ControllersEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const deviceSaved = await this.save(device);
-        resolve(deviceSaved);
+        const controllerSaved = await this.save(controller);
+        resolve(controllerSaved);
       } catch (error) {
         reject(error);
       }
     });
   }
 
-  findByIpAddress(ipAddress: string): Promise<DeviceEntity> {
+  findByIpAddress(ipAddress: string): Promise<ControllersEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const device = await this.findOne({
+        const controller = await this.findOne({
           where: {
             ipAddress: ipAddress,
           },
         });
-        resolve(device);
+        resolve(controller);
       } catch (error) {
         reject(error);
       }
     });
   }
 
-  findByMacAddress(macAddress: string): Promise<DeviceEntity> {
+  findByMacAddress(macAddress: string): Promise<ControllersEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const device = await this.findOne({
+        const controller = await this.findOne({
           where: {
             macAddress: macAddress,
           },
         });
-        resolve(device);
+        resolve(controller);
       } catch (error) {
         reject(error);
       }
     });
   }
-  findById(id: number): Promise<DeviceEntity> {
+  findById(id: number): Promise<ControllersEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const device = await this.findOne({
+        const controller = await this.findOne({
           where: {
             id: Equal(id),
           },
         });
-        resolve(device);
+        resolve(controller);
       } catch (error) {
         reject(error);
       }

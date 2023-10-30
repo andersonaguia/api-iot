@@ -2,8 +2,8 @@ import { BaseEntity } from "src/core/entities";
 import { Column, Entity } from "typeorm";
 import { ConnectionType } from "../enum/connection.type";
 
-@Entity({ name: "devices" })
-export class DeviceEntity extends BaseEntity {
+@Entity({ name: "controllers" })
+export class ControllersEntity extends BaseEntity {
   @Column({ length: 30, nullable: false })
   name: string;
 
@@ -16,7 +16,7 @@ export class DeviceEntity extends BaseEntity {
   @Column({ length: 20, unique: true, nullable: false })
   ipAddress: string;
 
-  @Column({ length: 50, unique: true })
+  @Column({ length: 50, unique: true, nullable: false })
   macAddress: string;
 
   @Column({length: 50, nullable: false})
