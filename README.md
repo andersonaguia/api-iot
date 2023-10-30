@@ -7,26 +7,30 @@
 
 # <p align="center">API-IOT</p>
 
-## 💻 Sobre o projeto
+## 🚀 Sobre o projeto
 
-[ApiIot](https://github.com/andersonaguia/api-manutencoes) é uma API para cadastro de usuários e controle de dispositivos.
+`Api IOT` é uma API Rest para cadastro de usuários, controle e obtenção de dados de dispositivos previamente cadastrados no sistema.
 
-## ⚙️ Funcionalidades
+## 📃 Funcionalidades
 
-- [x] Criar um usuário
+- ☑️ Criar um usuário
+- ☑️ Realizar login
+- ☑️ Alterar senha do usuário
+- ☑️ Criar um usuário
+- ☑️ Criar um usuário
 
 ---
 
-## :construction: Pré-requisitos
+## ⚠️ Pré-requisitos
 - Ter o [NodeJS](https://nodejs.org/en/) instalado na máquina;
-- Ter o [Postgres](https://www.postgresql.org/) instalado na máquina;
+- Ter o [MySQL](https://www.mysql.com/) instalado na máquina;
 #
 
-## :warning: Configuração da aplicação
+## ⚙️ Configuração da aplicação
 
-1) Criar um database no MySQL chamado `iot` para utilizar no projeto;
+1) Criar um database no MySQL chamado `automation` para utilizar no projeto;
 2) Utilizar o comando `npm install` para instalar as dependências;
-3) Utilizar o `.env_example` como base para o `.env` e colocar as suas configurações;
+3) Utilizar o `.env_example` como base para o `.env` e inserir as suas configurações;
 4) Utilizar o comando `npm run migration:run` para criar as tabelas após a configuração das variáveis de ambiente no passo 3
 5) Utilizar o comando `npm run start:dev` para executar a aplicação no ambiente de desenvolvimento.
 
@@ -34,27 +38,133 @@
 ## 💻 Acessando as rotas da aplicação
 
 ## Endpoints disponíveis
-### Criar um responsável pela manutenção
+
+### 🔓 Criar um usuário
+
+#### Para criar um usuário basta realizar uma requisição do tipo `POST` com os dados do `Body` conforme indicado abaixo. Para o campo `role` os seguintes valores serão aceitos: 
+
 ```
-POST: http://localhost:3000/users/create
+ADMIN = "admin"
+SUPERVISOR = "supervisor"
+MANAGER = "manager"
+USER = "user"
+```
+
+
+```
+POST: http://localhost:3001/auth/signup
 Headers: {
 	"Content-Type": "application/json"
 }
 Body: {  
-	"responsible": "Anderson"
+	"fullName": "My Name",
+	"email": "my_email@email.com",
+	"password": "aA123@456!",
+	"passwordConfirmation": "aA123@456!",
+	"occupation": "Supervisor",
+	"role": "supervisor"	
+}
+```
+
+**Resultado:**
+```
+{
+	"status": 201,
+	"headers": {},
+	"body": {
+		"statusCode": 201,
+		"message": "Usuário cadastrado com sucesso"
+	}
+}
+``` 
+
+### 🔓 Fazer login
+
+#### Para fazer login na aplicação você realizar uma requisição do tipo `POST` com os dados do `Body` conforme indicado abaixo. Você receberá um `Token JWT`` para acesso às rotas protegidas da aplicação.
+
+```
+POST: http://localhost:3001/auth/signin
+Headers: {
+	"Content-Type": "application/json"
+}
+
+Body: {  
+	"email": "my_email@email.com",
+	"password": "aA123@456!"	
 }
 ```
 **Resultado:**
 ```
 {
-	"responsible": "ANDERSON",
-	"created_at": "2023-02-03T00:56:36.985Z",
-	"updated_at": "2023-02-03T00:56:36.985Z",
-	"id": 1
+	"status": 200,
+	"headers": {},
+	"body": {
+		"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3ROYW1lIjoiQW5kZXJzb24iLCJvY2N1cGF0aW9uIjoiVMOpY25pY28gZW0gTWFudXRlbsOnw6NvIiwiZW1haWwiOiJhbmRlcnNvbmxhZ3VpYXJAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4MDkwMDU1LCJleHAiOjE2OTg2OTQ4NTV9.At1l6IXX2bnBgVdPpCFLmV63-y3YHJp-ZMTzON4twJI"
+	}
 }
-``` 
+```
 
-#
+### 🔒 Alterar senha
+
+#### Para alterar a senha do usuário você realizar uma requisição do tipo `PATCH` com os dados do `Body` conforme indicado abaixo. No cabeçalho da requisição você deverá enviar o `TOKEN` recebido no momento da realização do login.
+
+```
+POST: http://localhost:3001/auth/signin
+Headers: {
+	"Content-Type": "application/json",
+	"Authorization": "Bearer SEU_TOKEN_AQUI"
+}
+
+Body: {  
+	"email": "my_email@email.com",
+	"oldPassword": "aA123@456!",
+	"newPassword": "bB123@456!",
+	"newPasswordConfirmation": "bB123@456!"
+}
+```
+**Resultado:**
+```
+{
+	"status": 200,
+	"headers": {},
+	"body": {
+		"statusCode": 200,
+		"message": "Senha alterada com sucesso"		
+	}
+}
+```
+
+
+### 🔒 Alterar senha
+
+#### Para alterar a senha do usuário você realizar uma requisição do tipo `PATCH` com os dados do `Body` conforme indicado abaixo. No cabeçalho da requisição você deverá enviar o `TOKEN` recebido no momento da realização do login.
+
+```
+POST: http://localhost:3001/auth/signin
+Headers: {
+	"Content-Type": "application/json",
+	"Authorization": "Bearer SEU_TOKEN_AQUI"
+}
+
+Body: {  
+	"email": "my_email@email.com",
+	"oldPassword": "aA123@456!",
+	"newPassword": "bB123@456!",
+	"newPasswordConfirmation": "bB123@456!"
+}
+```
+**Resultado:**
+```
+{
+	"status": 200,
+	"headers": {},
+	"body": {
+		"statusCode": 200,
+		"message": "Senha alterada com sucesso"		
+	}
+}
+```
+
 
 ## 🛠 Tecnologias
 
@@ -75,8 +185,6 @@ https://img.shields.io/badge/Insomnia-5849be?style=for-the-badge&logo=Insomnia&l
 
 [![Mysql Badge](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
 
-[![AmazonAWSBadge](https://img.shields.io/badge/Amazon_AWS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)](https://aws.amazon.com/)
-
 
 ## 🦸 Autor
  <b>Anderson Aguiar</b>🚀
@@ -85,8 +193,7 @@ https://img.shields.io/badge/Insomnia-5849be?style=for-the-badge&logo=Insomnia&l
 
 ---
 
-## 📝 Licença
+## ©️ Licença
 
 Este projeto está sob a licença [MIT](./LICENSE).
 
-Feito com ❤️ por Anderson Aguiar 👋🏽 [Entre em contato!](https://www.linkedin.com/in/andersonlaguiar/)

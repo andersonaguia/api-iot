@@ -64,7 +64,7 @@ export class DevicesService {
         const device = await this.devicesRepository.findById(+id);
         device
           ? resolve(device)
-          : reject({ code: 404, message: "Nenhum dispositivo encontrado." });
+          : reject({ code: 404, message: "Nenhum dispositivo encontrado para o id informado." });
       } catch (error) {
         reject(error);
       }

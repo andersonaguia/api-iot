@@ -1,7 +1,6 @@
 import { DataSource, Equal, Repository } from "typeorm";
 import { DeviceEntity } from "./entities/device.entity";
-import { InjectDataSource } from "@nestjs/typeorm";
-import { CreateDeviceDto } from "./dto/create-device.dto";
+import { InjectDataSource } from "@nestjs/typeorm";""
 import { Injectable } from "@nestjs/common";
 
 @Injectable()

@@ -11,7 +11,6 @@ import {
 import { NestResponseBuilder } from "src/core/http/nest-response-builder";
 import { DevicesService } from "../services/devices.service";
 import { CreateDeviceDto } from "../dto/create-device.dto";
-import { DeviceEntity } from "../entities/device.entity";
 
 @Controller("devices")
 export class DevicesController {
