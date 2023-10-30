@@ -39,7 +39,6 @@ export class ThermistorDataController {
           .build();
       }
     } catch (error) {
-      console.log(error);
       if (error.code === 404) {
         return new NestResponseBuilder()
           .withStatus(HttpStatus.NOT_FOUND)
