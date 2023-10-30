@@ -88,5 +88,3 @@ https://img.shields.io/badge/Insomnia-5849be?style=for-the-badge&logo=Insomnia&l
 ## 📝 Licença
 
 Este projeto está sob a licença [MIT](./LICENSE).
-
-Feito com ❤️ por Anderson Aguiar 👋🏽 [Entre em contato!](https://www.linkedin.com/in/andersonlaguiar/)
