@@ -6,6 +6,7 @@ import configuration from 'src/common/env';
 import { join } from 'path';
 import { dataSourceOptions } from 'src/core/database/data-source';
 import { AuthModule } from 'src/core/auth/auth.module';
+import { DevicesModule } from '../devices/devices.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -17,6 +18,7 @@ import { AuthModule } from 'src/core/auth/auth.module';
     }),
     TypeOrmModule.forRoot({ autoLoadEntities: true, ...dataSourceOptions }),
     AuthModule,
+    DevicesModule,
   ],
   controllers: [],
   providers: [],
