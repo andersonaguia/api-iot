@@ -1,8 +1,15 @@
-import { Body, Controller, Get, HttpStatus, Param, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Query,
+} from "@nestjs/common";
 import { ThermistorsService } from "../services/thermistors.service";
 import { ThermistorValueDto } from "../dto/thermistor-value.dto";
 import { NestResponseBuilder } from "src/core/http/nest-response-builder";
-import { ThermistorsEntity } from "../entities/thermistors.entity";
 
 @Controller("thermistors")
 export class ThermistorsController {
@@ -17,7 +24,7 @@ export class ThermistorsController {
           .withStatus(HttpStatus.CREATED)
           .withBody({
             statusCode: HttpStatus.CREATED,
-            message: "Sensor cadastrado com sucesso",
+            message: "Termistor cadastrado com sucesso",
           })
           .build();
       } else {
@@ -25,15 +32,22 @@ export class ThermistorsController {
           .withStatus(HttpStatus.BAD_REQUEST)
           .withBody({
             statusCode: HttpStatus.BAD_REQUEST,
-            message: "Falha ao cadastrar o dispositivo. Tente novamente!",
+            message: "Falha ao cadastrar o termistor. Tente novamente!",
           })
           .build();
       }
     } catch (error) {
-      console.log(error);
       if (error.code === 404) {
         return new NestResponseBuilder()
           .withStatus(HttpStatus.NOT_FOUND)
+          .withBody({
+            statusCode: error.code,
+            message: error.message,
+          })
+          .build();
+      } else if (error.code === 409) {
+        return new NestResponseBuilder()
+          .withStatus(HttpStatus.CONFLICT)
           .withBody({
             statusCode: error.code,
             message: error.message,
@@ -50,11 +64,15 @@ export class ThermistorsController {
     }
   }
 
-  @Get("/findbyserialnumber/:serialnumber")
-  async findBySerialNumber(@Param("serialnumber") serialNumber: string) {
+  @Get("/findbycontrollerport/")
+  async findByControllerPort(
+    @Query("controllerId") controllerId: number,
+    @Query("controllerPort") controllerPort: number
+  ) {
     try {
-      const result = await this.thermistorsService.findBySerialNumber(
-        serialNumber
+      const result = await this.thermistorsService.findByControllerPort(
+        +controllerId,
+        +controllerPort
       );
 
       return new NestResponseBuilder()

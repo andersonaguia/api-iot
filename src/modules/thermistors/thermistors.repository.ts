@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { DataSource, Repository } from "typeorm";
+import { DataSource, Equal, Repository } from "typeorm";
 import { ThermistorsEntity } from "./entities/thermistors.entity";
 import { InjectDataSource } from "@nestjs/typeorm";
 
@@ -20,12 +20,12 @@ export class ThermistorsRepository extends Repository<ThermistorsEntity> {
     });
   }
 
-  findBySerialNumber(serialNumber: string): Promise<ThermistorsEntity> {
+  findById(id: number): Promise<ThermistorsEntity> {
     return new Promise(async (resolve, reject) => {
       try {
         const thermistor = await this.findOne({
           where: {
-            serialNumber: serialNumber,
+            id: +id,
           },
         });
         resolve(thermistor);
@@ -33,5 +33,22 @@ export class ThermistorsRepository extends Repository<ThermistorsEntity> {
         reject(error);
       }
     });
+  }
+
+  findByControllerPort(controllerId: number, controllerPort: number): Promise<ThermistorsEntity>{
+    return new Promise(async(resolve, reject) => {
+      try{
+        const thermistor = await this.findOne({
+          where: {
+            controller: Equal(+controllerId),
+            controllerPort: +controllerPort,
+          },
+        });
+        resolve(thermistor);
+
+      }catch(error){
+        reject(error);
+      }
+    })
   }
 }

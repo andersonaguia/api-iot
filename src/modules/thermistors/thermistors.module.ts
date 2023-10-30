@@ -8,5 +8,6 @@ import { ControllersModule } from "../controllers/controllers.module";
   imports: [ControllersModule],
   controllers: [ThermistorsController],
   providers: [ThermistorsService, ThermistorsRepository],
+  exports: [ThermistorsService],
 })
 export class ThermistorsModule {}

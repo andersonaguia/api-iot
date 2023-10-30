@@ -25,46 +25,83 @@ export class ThermistorsService {
           minRange,
           model,
           nominalResistance,
-          serialNumber,
           voltageDividerResistance,
         } = thermistorData;
         const controller = await this.deviceService.findById(+controllerId);
 
-        const thermistor = new ThermistorsEntity();
-        thermistor.controller = controller;
-        thermistor.controllerPort = controllerPort;
-        thermistor.location = location;
-        thermistor.manufacturer = manufacturer;
-        thermistor.maxRange = maxRange;
-        thermistor.minRange = minRange;
-        thermistor.model = model;
-        thermistor.nominalResistance = nominalResistance;
-        thermistor.serialNumber = serialNumber;
-        thermistor.voltageDividerResistance = voltageDividerResistance;
+        if (controller) {
+          const thermistorExist =
+            await this.thermistorsRepository.findByControllerPort(+controllerId, +controllerPort);
 
-        const thermistorSaved = await this.thermistorsRepository.addThermistor(
-          thermistor
-        );
+          if (thermistorExist) {
+            reject({
+              code: 409,
+              message:
+                "Já existe um termistor cadastrado com o mesmo serial number",
+            });
+          } else {
+            const thermistor = new ThermistorsEntity();
+            thermistor.controller = controller;
+            thermistor.controllerPort = controllerPort;
+            thermistor.location = location;
+            thermistor.manufacturer = manufacturer;
+            thermistor.maxRange = maxRange;
+            thermistor.minRange = minRange;
+            thermistor.model = model;
+            thermistor.nominalResistance = nominalResistance;
+            thermistor.voltageDividerResistance = voltageDividerResistance;
 
-        resolve(thermistorSaved);
+            const thermistorSaved =
+              await this.thermistorsRepository.addThermistor(thermistor);
+
+            resolve(thermistorSaved);
+          }
+        } else {
+          reject({
+            code: 404,
+            message: "Nenhum controlador foi encontrado para o id informado",
+          });
+        }
       } catch (error) {
         reject(error);
       }
     });
   }
 
-  findBySerialNumber(serialNumber: string): Promise<ThermistorsEntity> {
+  findById(id: number): Promise<ThermistorsEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const thermistor = await this.thermistorsRepository.findBySerialNumber(
-          serialNumber
-        );
+        const thermistor = await this.thermistorsRepository.findById(+id);
 
         if (!thermistor) {
           reject({
             code: 404,
-            message:
-              "Nenhum termistor encontrado para o número serial informado",
+            message: "Nenhum termistor encontrado para o id informado",
+          });
+        } else {
+          resolve(thermistor);
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  findByControllerPort(
+    controllerId: number,
+    controllerPort: number
+  ): Promise<ThermistorsEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const thermistor =
+          await this.thermistorsRepository.findByControllerPort(
+            +controllerId,
+            +controllerPort
+          );
+        if (!thermistor) {
+          reject({
+            code: 404,
+            message: "Nenhum termistor encontrado",
           });
         } else {
           resolve(thermistor);
