@@ -11,10 +11,6 @@
 
 [ApiIot](https://github.com/andersonaguia/api-manutencoes) é uma API para cadastro de usuários, cadastro e controle de dispositivos.
 
-##  Funcionalidades
-
-- [x] Criar um usuário
-
 ## 🚧 Funcionalidades
 
 - [x] Criar um usuário
