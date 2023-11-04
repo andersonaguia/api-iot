@@ -3,7 +3,6 @@ import { Between, DataSource, Equal, Repository } from "typeorm";
 import { ThermistorDataEntity } from "./entities/thermistor-data.entity";
 import { InjectDataSource } from "@nestjs/typeorm";
 import { FindValuesByDateDto } from "./dto/find-by-date.dto";
-import { format } from "date-fns";
 
 @Injectable()
 export class ThermistorsDataRepository extends Repository<ThermistorDataEntity> {
