@@ -9,7 +9,7 @@ export class RelaysRepository extends Repository<RelaysEntity> {
     super(RelaysEntity, dataSource.createEntityManager());
   }
 
-  addThermistor(relayData: RelaysEntity): Promise<RelaysEntity> {
+  addRelay(relayData: RelaysEntity): Promise<RelaysEntity> {
     return new Promise(async (resolve, reject) => {
       try {
         const relay = await this.save(relayData);
