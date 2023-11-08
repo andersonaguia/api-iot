@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { DataSource, Equal, Repository } from "typeorm";
-import { InjectDataSource } from "@nestjs/typeorm";
-import { RelaysEntity } from "./entities/relays.entity";
+import { Injectable } from '@nestjs/common';
+import { DataSource, Equal, Repository } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { RelaysEntity } from './entities/relays.entity';
 
 @Injectable()
 export class RelaysRepository extends Repository<RelaysEntity> {
@@ -20,6 +20,21 @@ export class RelaysRepository extends Repository<RelaysEntity> {
     });
   }
 
+  findById(id: number): Promise<RelaysEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const relay = await this.findOne({
+          where: {
+            id: Equal(+id),
+          },
+        });
+        resolve(relay);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   findAllRelaysByControllerId(controllerId: number): Promise<RelaysEntity[]> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -28,7 +43,6 @@ export class RelaysRepository extends Repository<RelaysEntity> {
             controller: Equal(+controllerId),
           },
         });
-        console.log(relays);
         resolve(relays);
       } catch (error) {
         reject(error);
@@ -36,9 +50,12 @@ export class RelaysRepository extends Repository<RelaysEntity> {
     });
   }
 
-  findByControllerPort(controllerId: number, controllerPort: number): Promise<RelaysEntity>{
-    return new Promise(async(resolve, reject) => {
-      try{
+  findByControllerPort(
+    controllerId: number,
+    controllerPort: number,
+  ): Promise<RelaysEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
         const relay = await this.findOne({
           where: {
             controller: Equal(+controllerId),
@@ -46,10 +63,9 @@ export class RelaysRepository extends Repository<RelaysEntity> {
           },
         });
         resolve(relay);
-
-      }catch(error){
+      } catch (error) {
         reject(error);
       }
-    })
+    });
   }
 }
