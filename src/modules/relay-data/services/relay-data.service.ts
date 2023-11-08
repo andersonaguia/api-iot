@@ -31,10 +31,23 @@ export class RelayDataService {
           relayData.relay = relay;
 
           const newRelayData =
-            await this.relayDataRepository.changeState(relayData);
+            await this.relayDataRepository.newRelayState(relayData);
 
           resolve(newRelayData);
         }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  findAllRelayStateByControllerId(
+    controllerId: number,
+  ): Promise<RelayDataEntity[]> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const allRelayState = await this.relayDataRepository.findAllRelayStateByControllerId(+controllerId);
+        resolve(allRelayState);
       } catch (error) {
         reject(error);
       }
