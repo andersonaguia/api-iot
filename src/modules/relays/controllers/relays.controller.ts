@@ -3,18 +3,19 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Param,
   Post,
   Query,
-} from "@nestjs/common";
-import { NestResponseBuilder } from "src/core/http/nest-response-builder";
-import { RelaysService } from "../services/relays.service";
-import { CreateRelayDto } from "../dto/create-relay.dto";
+} from '@nestjs/common';
+import { NestResponseBuilder } from 'src/core/http/nest-response-builder';
+import { RelaysService } from '../services/relays.service';
+import { CreateRelayDto } from '../dto/create-relay.dto';
 
-@Controller("relays")
+@Controller('relays')
 export class RelaysController {
   constructor(private readonly relaysService: RelaysService) {}
 
-  @Post("/add")
+  @Post('/add')
   async add(@Body() data: CreateRelayDto) {
     try {
       const result = await this.relaysService.addRelay(data);
@@ -23,7 +24,7 @@ export class RelaysController {
           .withStatus(HttpStatus.CREATED)
           .withBody({
             statusCode: HttpStatus.CREATED,
-            message: "Relé cadastrado com sucesso",
+            message: 'Relé cadastrado com sucesso',
           })
           .build();
       } else {
@@ -31,7 +32,7 @@ export class RelaysController {
           .withStatus(HttpStatus.BAD_REQUEST)
           .withBody({
             statusCode: HttpStatus.BAD_REQUEST,
-            message: "Falha ao cadastrar o relé. Tente novamente!",
+            message: 'Falha ao cadastrar o relé. Tente novamente!',
           })
           .build();
       }
@@ -63,15 +64,11 @@ export class RelaysController {
     }
   }
 
-  @Get("/findbycontrollerport/")
-  async findByControllerPort(
-    @Query("controllerId") controllerId: number,
-    @Query("controllerPort") controllerPort: number
-  ) {
+  @Get('/findallrelaysbycontrollerid/:id')
+  async findAllRelaysByControllerId(@Param('id') controllerId: number) {
     try {
-      const result = await this.relaysService.findByControllerPort(
+      const result = await this.relaysService.findAllRelaysByControllerId(
         +controllerId,
-        +controllerPort
       );
 
       return new NestResponseBuilder()
