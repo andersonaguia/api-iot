@@ -18,6 +18,7 @@ export class RelayDataController {
 
   @Post('/newrelaystate')
   async newRelayState(@Body() data: NewRelayStateDto) {
+    console.log(data);
     try {
       const result = await this.relayDataService.newRelayState(data);
       if (result) {
@@ -52,6 +53,40 @@ export class RelayDataController {
         .withBody({
           statusCode: error.code,
           message: error.sqlMessage,
+        })
+        .build();
+    }
+  }
+
+  @Get('/findallrelaystatebycontrollerid/:id')
+  async findAllRelayStateByControllerId(@Param('id') controllerId: number) {
+    try {      
+      const result = await this.relayDataService.findAllRelayStateByControllerId(
+        +controllerId,
+      );
+
+      return new NestResponseBuilder()
+        .withStatus(HttpStatus.OK)
+        .withBody({
+          statusCode: HttpStatus.OK,
+          data: result,
+        })
+        .build();
+    } catch (error) {
+      if (error.code === 404) {
+        return new NestResponseBuilder()
+          .withStatus(HttpStatus.NOT_FOUND)
+          .withBody({
+            statusCode: HttpStatus.NOT_FOUND,
+            detail: error.message,
+          })
+          .build();
+      }
+      return new NestResponseBuilder()
+        .withStatus(HttpStatus.BAD_REQUEST)
+        .withBody({
+          statusCode: HttpStatus.BAD_REQUEST,
+          detail: error.sqlMessage,
         })
         .build();
     }
