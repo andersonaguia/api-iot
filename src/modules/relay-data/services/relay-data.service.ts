@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { RelayDataRepository } from "../relay-data.repository";
 import { RelaysService } from "src/modules/relays/services/relays.service";
-import { ChangeStateDto } from "../dto/change-state.dto";
+import { NewRelayStateDto } from "../dto/new-relay-state";
 import { RelayDataEntity } from "../entities/relay-data.entity";
 
 @Injectable()
@@ -11,7 +11,7 @@ export class RelayDataService {
     private readonly relayService: RelaysService
   ) {}
 
-  addValue(data: ChangeStateDto): Promise<RelayDataEntity> {
+  newRelayState(data: NewRelayStateDto): Promise<RelayDataEntity> {
     return new Promise(async (resolve, reject) => {
       const { expectedLevel, currentLevel, relayId } = data;
       try {

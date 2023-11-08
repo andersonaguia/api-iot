@@ -1,6 +1,6 @@
 import { IsBoolean, IsNotEmpty, IsNumber } from "class-validator";
 
-export class ChangeStateDto {
+export class NewRelayStateDto {
   @IsNotEmpty({ message: "Obrigatório informar o campo expectedLevel" })
   @IsBoolean({ message: "Campo expectedLevel deve ser um booleano" })
   readonly expectedLevel: boolean;
