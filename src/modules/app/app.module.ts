@@ -10,6 +10,7 @@ import { ThermistorsModule } from '../thermistors/thermistors.module';
 import { ControllersModule } from '../controllers/controllers.module';
 import { ThermistorDataModule } from '../thermistor-data/thermistor-data.module';
 import { RelaysModule } from '../relays/relays.module';
+import { RelayDataModule } from '../relay-data/relay-data.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -25,6 +26,7 @@ import { RelaysModule } from '../relays/relays.module';
     ThermistorsModule,
     ThermistorDataModule,
     RelaysModule,
+    RelayDataModule,
   ],
   controllers: [],
   providers: [],
