@@ -52,6 +52,23 @@ export class RelaysService {
     });
   }
 
+  findById(id: number): Promise<RelaysEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const relay = await this.relaysRepository.findById(+id);
+        if (!relay) {
+          reject({
+            code: 404,
+            message: 'Nenhum relé encontrado para o id informado',
+          });
+        } else {
+          resolve(relay);
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
   findAllRelaysByControllerId(controllerId: number): Promise<RelaysEntity[]> {
     return new Promise(async (resolve, reject) => {
       try {
