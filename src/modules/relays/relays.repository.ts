@@ -20,15 +20,16 @@ export class RelaysRepository extends Repository<RelaysEntity> {
     });
   }
 
-  findById(id: number): Promise<RelaysEntity> {
+  findAllRelaysByControllerId(controllerId: number): Promise<RelaysEntity[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        const relay = await this.findOne({
+        const relays = await this.find({
           where: {
-            id: +id,
+            controller: Equal(+controllerId),
           },
         });
-        resolve(relay);
+        console.log(relays);
+        resolve(relays);
       } catch (error) {
         reject(error);
       }

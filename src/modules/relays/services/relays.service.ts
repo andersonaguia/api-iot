@@ -52,18 +52,20 @@ export class RelaysService {
     });
   }
 
-  findById(id: number): Promise<RelaysEntity> {
+  findAllRelaysByControllerId(controllerId: number): Promise<RelaysEntity[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        const relay = await this.relaysRepository.findById(+id);
+        const relays = await this.relaysRepository.findAllRelaysByControllerId(
+          +controllerId,
+        );
 
-        if (!relay) {
+        if (relays.length > 0) {
+          resolve(relays);
+        } else {
           reject({
             code: 404,
             message: 'Nenhum relé encontrado para o id informado',
           });
-        } else {
-          resolve(relay);
         }
       } catch (error) {
         reject(error);
@@ -77,11 +79,10 @@ export class RelaysService {
   ): Promise<RelaysEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const relay =
-          await this.relaysRepository.findByControllerPort(
-            +controllerId,
-            +controllerPort,
-          );
+        const relay = await this.relaysRepository.findByControllerPort(
+          +controllerId,
+          +controllerPort,
+        );
         if (!relay) {
           reject({
             code: 404,
