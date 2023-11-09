@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 COPY package*json ./
 
-RUN apt-get update
+RUN apk update
 
 RUN npm install
 
