@@ -1,14 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { ControllersService } from '../../controllers/services/controllers.service';
 import { RelaysRepository } from '../relays.repository';
 import { CreateRelayDto } from '../dto/create-relay.dto';
 import { RelaysEntity } from '../entities/relays.entity';
+import { RelayDataService } from 'src/modules/relay-data/services/relay-data.service';
+import { NewRelayStateDto } from 'src/modules/relay-data/dto/new-relay-state';
 
 @Injectable()
 export class RelaysService {
   constructor(
     private readonly relaysRepository: RelaysRepository,
     private readonly deviceService: ControllersService,
+    @Inject(forwardRef(() => RelayDataService))
+    private readonly relayDataService: RelayDataService,
   ) {}
 
   addRelay(relayData: CreateRelayDto): Promise<RelaysEntity> {
@@ -37,6 +41,13 @@ export class RelaysService {
             relay.surname = surname;
 
             const relaySaved = await this.relaysRepository.addRelay(relay);
+
+            const relayState = new NewRelayStateDto();
+            relayState.relayId = relay.id;
+            relayState.expectedLevel = false;
+            relayState.currentLevel = false;
+
+            const initialState = await this.relayDataService.newRelayState(relayState);
 
             resolve(relaySaved);
           }
