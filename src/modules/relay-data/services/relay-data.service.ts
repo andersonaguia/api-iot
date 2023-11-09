@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import { RelayDataRepository } from "../relay-data.repository";
 import { RelaysService } from "src/modules/relays/services/relays.service";
 import { NewRelayStateDto } from "../dto/new-relay-state";
@@ -8,7 +8,8 @@ import { RelayDataEntity } from "../entities/relay-data.entity";
 export class RelayDataService {
   constructor(
     private readonly relayDataRepository: RelayDataRepository,
-    private readonly relayService: RelaysService
+    @Inject(forwardRef(() => RelaysService))
+    private readonly relayService: RelaysService,
   ) {}
 
   newRelayState(data: NewRelayStateDto): Promise<RelayDataEntity> {
