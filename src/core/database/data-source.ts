@@ -19,7 +19,7 @@ export const dataSourceOptions: DataSourceOptions = {
   migrationsRun: false,
   synchronize: false,
   migrationsTableName: 'migrations_history',
-  logging: true,
+  logging: false,
 };
 
 const dataSource = new DataSource(dataSourceOptions);
