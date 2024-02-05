@@ -12,6 +12,10 @@ import { ThermistorDataModule } from '../thermistor-data/thermistor-data.module'
 import { RelaysModule } from '../relays/relays.module';
 import { RelayDataModule } from '../relay-data/relay-data.module';
 import { EventsModule } from 'src/modules/events/events.module';
+import { AlarmsModule } from '../alarms/alarms.module';
+import { AlarmDataModule } from '../alarm-data/alarm-data.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { JobsModule } from '../jobs/jobs.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -29,6 +33,10 @@ import { EventsModule } from 'src/modules/events/events.module';
     RelaysModule,
     RelayDataModule,
     EventsModule,
+    AlarmsModule,
+    AlarmDataModule,
+    ScheduleModule.forRoot(),
+    JobsModule
   ],
   controllers: [],
   providers: [],
