@@ -1,7 +1,8 @@
-import { DataSource, Equal, Repository } from "typeorm";
-import { ControllersEntity } from "./entities/controllers.entity";
-import { InjectDataSource } from "@nestjs/typeorm";""
-import { Injectable } from "@nestjs/common";
+import { DataSource, Equal, IsNull, Repository } from 'typeorm';
+import { ControllersEntity } from './entities/controllers.entity';
+import { InjectDataSource } from '@nestjs/typeorm';
+('');
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ControllersRepository extends Repository<ControllersEntity> {
@@ -58,6 +59,17 @@ export class ControllersRepository extends Repository<ControllersEntity> {
           },
         });
         resolve(controller);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  findAll(): Promise<ControllersEntity[]> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const controllers = await this.find({ where: { deletedAt: IsNull() } });
+        resolve(controllers);
       } catch (error) {
         reject(error);
       }

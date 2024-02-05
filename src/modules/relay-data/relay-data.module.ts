@@ -5,7 +5,7 @@ import { RelayDataRepository } from './relay-data.repository';
 import { RelaysModule } from '../relays/relays.module';
 
 @Module({
-  imports: [forwardRef(() =>RelaysModule)],
+  imports: [forwardRef(() => RelaysModule)],
   controllers: [RelayDataController],
   providers: [RelayDataService, RelayDataRepository],
   exports: [RelayDataService],

@@ -1,6 +1,7 @@
 import { BaseEntity } from "src/core/entities";
-import { Column, Entity } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { ConnectionType } from "../enum/connection.type";
+import { UserEntity } from "src/modules/users/entities/user.entity";
 
 @Entity({ name: "controllers" })
 export class ControllersEntity extends BaseEntity {
