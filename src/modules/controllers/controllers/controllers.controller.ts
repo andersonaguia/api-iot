@@ -6,7 +6,6 @@ import {
   Param,
   Post,
   Query,
-  ValidationPipe,
 } from "@nestjs/common";
 import { NestResponseBuilder } from "src/core/http/nest-response-builder";
 import { ControllersService } from "../services/controllers.service";
@@ -17,7 +16,7 @@ export class ControllersController {
   constructor(private readonly controllersService: ControllersService) {}
 
   @Post("/create")
-  async create(@Body(ValidationPipe) controllerData: CreateControllerDto) {
+  async create(@Body() controllerData: CreateControllerDto) {
     try {
       const result = await this.controllersService.create(controllerData);
       if (result.id) {
@@ -145,6 +144,29 @@ export class ControllersController {
           })
           .build();
       }
+      return new NestResponseBuilder()
+        .withStatus(HttpStatus.BAD_REQUEST)
+        .withBody({
+          statusCode: HttpStatus.BAD_REQUEST,
+          detail: error.sqlMessage,
+        })
+        .build();
+    }
+  }
+
+  @Get("/findall")
+  async findAll() {
+    try {
+      const result = await this.controllersService.findAll();
+
+      return new NestResponseBuilder()
+        .withStatus(HttpStatus.OK)
+        .withBody({
+          statusCode: HttpStatus.OK,
+          data: result,
+        })
+        .build();
+    } catch (error) {
       return new NestResponseBuilder()
         .withStatus(HttpStatus.BAD_REQUEST)
         .withBody({

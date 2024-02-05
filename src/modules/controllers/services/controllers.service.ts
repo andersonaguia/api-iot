@@ -1,11 +1,11 @@
-import { Injectable } from "@nestjs/common";
-import { ControllersRepository } from "../controllers.repository";
-import { CreateControllerDto } from "../dto/create-controller.dto";
-import { ControllersEntity } from "../entities/controllers.entity";
+import { Injectable } from '@nestjs/common';
+import { ControllersRepository } from '../controllers.repository';
+import { CreateControllerDto } from '../dto/create-controller.dto';
+import { ControllersEntity } from '../entities/controllers.entity';
 
 @Injectable()
 export class ControllersService {
-  constructor(private readonly ControllersRepository: ControllersRepository) {}
+  constructor(private readonly controllersRepository: ControllersRepository) {}
 
   create(controllerData: CreateControllerDto): Promise<ControllersEntity> {
     return new Promise(async (resolve, reject) => {
@@ -22,7 +22,9 @@ export class ControllersService {
         controller.createdAt = new Date();
         controller.location = location;
 
-        const newcontroller = await this.ControllersRepository.addController(controller);
+        const newcontroller = await this.controllersRepository.addController(
+          controller,
+        );
         resolve(newcontroller);
       } catch (error) {
         reject(error);
@@ -33,10 +35,12 @@ export class ControllersService {
   findByIpAddress(ipAddress: string): Promise<ControllersEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const controller = await this.ControllersRepository.findByIpAddress(ipAddress);
+        const controller = await this.controllersRepository.findByIpAddress(
+          ipAddress,
+        );
         controller
           ? resolve(controller)
-          : reject({ code: 404, message: "Nenhum dispositivo encontrado." });
+          : reject({ code: 404, message: 'Nenhum dispositivo encontrado.' });
       } catch (error) {
         reject(error);
       }
@@ -46,12 +50,12 @@ export class ControllersService {
   findByMacAddress(macAddress: string): Promise<ControllersEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const controller = await this.ControllersRepository.findByMacAddress(
-          macAddress
+        const controller = await this.controllersRepository.findByMacAddress(
+          macAddress,
         );
         controller
           ? resolve(controller)
-          : reject({ code: 404, message: "Nenhum dispositivo encontrado." });
+          : reject({ code: 404, message: 'Nenhum dispositivo encontrado.' });
       } catch (error) {
         reject(error);
       }
@@ -61,10 +65,24 @@ export class ControllersService {
   findById(id: number): Promise<ControllersEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const controller = await this.ControllersRepository.findById(+id);
+        const controller = await this.controllersRepository.findById(+id);
         controller
           ? resolve(controller)
-          : reject({ code: 404, message: "Nenhum dispositivo encontrado para o id informado." });
+          : reject({
+              code: 404,
+              message: 'Nenhum dispositivo encontrado para o id informado.',
+            });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  findAll(): Promise<ControllersEntity[]> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const controllers = await this.controllersRepository.findAll();
+        resolve(controllers);
       } catch (error) {
         reject(error);
       }

@@ -22,8 +22,4 @@ export class ControllersEntity extends BaseEntity {
 
   @Column({length: 50, nullable: false})
   location: string;
-
-  @ManyToOne(() => UserEntity, { nullable: false })
-  @JoinColumn({ name: "userId" })
-  user: UserEntity;
 }
