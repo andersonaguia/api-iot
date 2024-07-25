@@ -1,8 +1,10 @@
-version: '1.0.0'
+version: '2.0.0'
 services:
   nestjs:
     environment:
       - PORT=
+      - SOCKETIO_PORT=
+      - WEBSOCKET_PORT=
       - DB_DIALECT=
       - DB_HOST=
       - DB_PORT=
@@ -10,10 +12,17 @@ services:
       - DB_PASS=
       - DB_NAME=
       - JWT_SECRET=
-    image: api-automation:1.0
+      - WHATSAPP_API_CONNECT_URL=
+      - WHATSAPP_API_SEND_MESSAGE_URL=
+    image: api-iot:2.0
     build:
       context: .
       dockerfile: Dockerfile
       target: build
     ports: 
       - 3004:3004
+      - 8001:8001
+      - 8002:8002
+    volumes:
+      - /server/node_modules
+    restart: always
