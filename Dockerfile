@@ -8,12 +8,16 @@ COPY package*json ./
 
 RUN apk update
 
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 COPY . .
 
 RUN npm run build
 
 EXPOSE 3004
+
+EXPOSE 8001
+
+EXPOSE 8002
 
 CMD ["node", "dist/main.js"]

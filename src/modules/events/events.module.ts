@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { EventsGateway } from './events.gateway';
-import { RelayDataModule } from '../relay-data/relay-data.module';
+import { WebSocketService } from './services/websocket.service';
 
 @Module({
-  providers: [EventsGateway],
-  imports:[RelayDataModule]
+  providers: [EventsGateway, WebSocketService],
+  exports:[],
+  imports:[]
 })
 export class EventsModule {}

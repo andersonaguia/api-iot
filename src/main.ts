@@ -9,7 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
   const PORT = configService.get<number>('port') || 3000;
-  const SOCKET_PORT = configService.get<number>('socketPort') || 8001;
+  const SOCKETIO_PORT = configService.get<number>('socketIoPort') || 8001;
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -23,7 +23,7 @@ async function bootstrap() {
 
   await app.listen(PORT).then(() => {
     Logger.log(`Server is running on port ${PORT}`);
-    Logger.log(`WebSocket is running on port ${SOCKET_PORT}`);
+    Logger.log(`SocketIO is running on port ${SOCKETIO_PORT}`);
   });
 }
 

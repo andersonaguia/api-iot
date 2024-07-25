@@ -88,7 +88,7 @@ npm run migration:run
 ```
 7. Servir a aplicação em modo desenvolvimento;
 ```
-npm run migration:run
+npm run start:dev
 ```
 #
 ## 💻 Acessando as rotas da aplicação

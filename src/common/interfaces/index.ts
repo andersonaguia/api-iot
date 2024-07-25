@@ -1,6 +1,7 @@
 export interface EnvProps {
   port: number;
-  socketPort: number;
+  socketIoPort: number;
+  webSocketPort: number;
   database: {
     dialect: string;
     host: string;
