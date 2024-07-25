@@ -7,12 +7,10 @@ import {
   WebSocketServer,
   WsResponse,
 } from '@nestjs/websockets';
-import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { Server, Socket } from 'socket.io';
-import { ConfigDataDto } from './dto/configData.dto';
-import { RelayDataService } from '../relay-data/services/relay-data.service';
 import { RelayDataEntity } from '../relay-data/entities/relay-data.entity';
+import { WebSocketService } from './services/websocket.service';
 
 @WebSocketGateway({
   cors: {
@@ -20,7 +18,7 @@ import { RelayDataEntity } from '../relay-data/entities/relay-data.entity';
   },
 })
 export class EventsGateway implements OnModuleInit {
-  constructor(private readonly relayDataService: RelayDataService){}
+  constructor(private readonly websocketService: WebSocketService) {}
   @WebSocketServer()
   server: Server;
 
@@ -28,7 +26,7 @@ export class EventsGateway implements OnModuleInit {
 
   handleConnection(client: Socket) {
     console.log(
-      `Client ${client.id} connected with EIO version: ${client.handshake.query.EIO}`,
+      `Client ${client.id} connected with SocketIO EIO ${client.handshake.query.EIO}`,
     );
   }
 
@@ -38,19 +36,21 @@ export class EventsGateway implements OnModuleInit {
 
   onModuleInit() {}
 
-  @SubscribeMessage('events')
-  findAll(@MessageBody() data: ConfigDataDto): Observable<WsResponse<RelayDataEntity[]>> {
-    console.log(data);
-/*
-    this.server.emit('onConfigMessage', {
-      msg: 'New Message',
-      content: { id: 1, serialNumber: data.serialNumber, relay: 'Piscina', value: true },
-    });
-*/
-    /*return from (this.relayDataService.findAllRelayStateByControllerId(50)).pipe(
-      map((item) => ({ event: 'relayData', data: item })),
-    );*/
-    return
+  @SubscribeMessage('fitness')
+  findAll(
+    @MessageBody() data: { from: string; to: string; message: string },
+  ): Observable<WsResponse<RelayDataEntity[]>> {
+    //console.log(data);
+
+    this.server.emit('fitnessBt', data);
+
+    this.websocketService.sendWebSocketMessage(data);
+
+    return;
+  }
+
+  sendSocketIoMessage(data: { from: string; to: string; message: string }) {
+    //console.log("ENVIANDO SOCKETIO: ", data)
+    this.server.emit('fitnessBt', data);
   }
 }
-
