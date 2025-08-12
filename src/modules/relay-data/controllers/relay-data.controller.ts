@@ -91,4 +91,41 @@ export class RelayDataController {
         .build();
     }
   }
+
+  @Get('/findstateforschedule')
+  async findStateForSchedule() {
+    try {    
+      
+      const now = new Date();
+      const hour = now.getHours();
+
+      // Se a hora for >= 17 ou < 6, retorna true, senão false
+      const relaysState = (hour >= 17 || hour < 6);
+
+      return new NestResponseBuilder()
+        .withStatus(HttpStatus.OK)
+        .withBody({
+          statusCode: HttpStatus.OK,
+          data: relaysState,
+        })
+        .build();
+    } catch (error) {
+      if (error.code === 404) {
+        return new NestResponseBuilder()
+          .withStatus(HttpStatus.NOT_FOUND)
+          .withBody({
+            statusCode: HttpStatus.NOT_FOUND,
+            detail: error.message,
+          })
+          .build();
+      }
+      return new NestResponseBuilder()
+        .withStatus(HttpStatus.BAD_REQUEST)
+        .withBody({
+          statusCode: HttpStatus.BAD_REQUEST,
+          detail: error.sqlMessage,
+        })
+        .build();
+    }
+  }
 }
