@@ -1,0 +1,80 @@
+name: Deploy backend to server
+
+on:
+  push:
+    branches:
+      - main  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Deploy to Ubuntu server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}  
+          port: ${{ secrets.SERVER_PORT }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          timeout: 30m
+          script: |
+            echo "✅ Conexão SSH estabelecida"
+
+            echo "🔐 Adicionando chave SSH do GitHub ao known_hosts..."
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+            cd ~/Projects/Backend
+            
+            if [ -d "api-iot/.git" ]; then
+              echo "🔄 Atualizando repositório existente (git pull)..."
+              cd api-iot
+              git remote set-url origin git@github.com:andersonaguia/api-iot.git
+              git pull
+            else
+              echo "🛠️ Clonando repositório..."
+              git clone git@github.com:andersonaguia/api-iot.git
+              echo "✅ Clone concluído!"
+            fi
+            echo "✅ Repositório sincronizado!"
+
+            echo "🛠️ Exportando variáveis de ambiente..."
+            
+            export PORT=${{ secrets.PORT }}
+            export SOCKETIO_PORT=${{ secrets.SOCKETIO_PORT }}
+            export WEBSOCKET_PORT=${{ secrets.WEBSOCKET_PORT }}
+            export DB_DIALECT=${{ secrets.DB_DIALECT }}
+            export DB_HOST=${{ secrets.DB_HOST }}
+            export DB_PORT=${{ secrets.DB_PORT }}
+            export DB_USER=${{ secrets.DB_USER }}
+            export DB_PASS=${{ secrets.DB_PASS }}            
+            export DB_NAME=${{ secrets.DB_NAME }}
+            export JWT_SECRET=${{ secrets.JWT_SECRET }}
+            export WHATSAPP_API_CONNECT_URL=${{ secrets.WHATSAPP_API_CONNECT_URL }}
+            export WHATSAPP_API_SEND_MESSAGE_URL=${{ secrets.WHATSAPP_API_SEND_MESSAGE_URL }}
+
+            echo "🛑 Derrubando container antigo..."
+            docker compose down
+
+            echo "🚀 Subindo novo container com build atualizado..."
+            PORT=$PORT \
+            SOCKETIO_PORT=$SOCKETIO_PORT \
+            WEBSOCKET_PORT=$WEBSOCKET_PORT \
+            DB_DIALECT=$DB_DIALECT \
+            DB_HOST=$DB_HOST \
+            DB_PORT=$DB_PORT \
+            DB_USER=$DB_USER \
+            DB_PASS=$DB_PASS \
+            DB_NAME=$DB_NAME \
+            JWT_SECRET=$JWT_SECRET \
+            WHATSAPP_API_CONNECT_URL=$WHATSAPP_API_CONNECT_URL \
+            WHATSAPP_API_SEND_MESSAGE_URL=$WHATSAPP_API_SEND_MESSAGE_URL \            
+            docker compose up -d --build
+
+            echo "✅ Deploy concluído com sucesso!"
+
+
+
+
+
+          
+            
