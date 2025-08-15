@@ -81,9 +81,11 @@ Enter password:
 
 mysql> CREATE DATABASE automation CHARACTER SET utf8 COLLATE utf8_general_ci;
 ```
-6. Rodar as migrations para criar as tabelas do banco de dados automaticamente
+6. Instalar o cross-env e rodar as migrations para criar as tabelas do banco de dados automaticamente
 
 ```
+npm install --save-dev cross-env
+
 npm run migration:run
 ```
 7. Servir a aplicação em modo desenvolvimento;

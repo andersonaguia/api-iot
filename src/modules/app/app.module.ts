@@ -16,15 +16,16 @@ import { AlarmsModule } from '../alarms/alarms.module';
 import { AlarmDataModule } from '../alarm-data/alarm-data.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { JobsModule } from '../jobs/jobs.module';
+import { HealthCheckController } from './controllers/health-check.controller';
 @Module({
   imports: [
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '..', '..', 'public'),
-    }),
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', '..', '..', 'public'),
+    // }),
     TypeOrmModule.forRoot({ autoLoadEntities: true, ...dataSourceOptions }),
     AuthModule,
     ControllersModule,
@@ -38,7 +39,7 @@ import { JobsModule } from '../jobs/jobs.module';
     ScheduleModule.forRoot(),
     JobsModule
   ],
-  controllers: [],
+  controllers: [HealthCheckController],
   providers: [],
 })
 export class AppModule {}
