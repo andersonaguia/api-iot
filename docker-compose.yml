@@ -24,9 +24,9 @@ services:
         SOCKETIO_PORT: ${SOCKETIO_PORT}
         WEBSOCKET_PORT: ${WEBSOCKET_PORT}
     ports: 
-      - ${PORT}:${PORT}
-      - ${SOCKETIO_PORT}:${SOCKETIO_PORT}
-      - ${WEBSOCKET_PORT}:${WEBSOCKET_PORT}
+      - 3004:3004
+      - 8001:8001
+      - 8002:8002
     volumes:
       - /server/node_modules
     restart: always
