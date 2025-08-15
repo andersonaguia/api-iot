@@ -14,11 +14,15 @@ COPY . .
 
 RUN npm run build
 
+<<<<<<< Updated upstream
 ARG PORT
 ARG SOCKETIO_PORT
 ARG WEBSOCKET_PORT
 
 EXPOSE ${PORT}
+=======
+EXPOSE 3004
+>>>>>>> Stashed changes
 
 EXPOSE ${SOCKETIO_PORT}
 
