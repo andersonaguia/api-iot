@@ -18,7 +18,7 @@ export class WebSocketService implements OnModuleInit, OnModuleDestroy {
 
   onModuleInit() {
     const WebSocket = require('ws');
-    this.wss = new WebSocket.Server({ port: process.env.WEBSOCKET_PORT, host: '0.0.0.0'  });
+    this.wss = new WebSocket.Server({ port: process.env.WEBSOCKET_PORT });
 
     this.wss.on('connection', (ws: WebSocket) => {
       console.log(`Client connected with WebSocket`);
