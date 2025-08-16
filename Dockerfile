@@ -1,31 +1,29 @@
+# =============================
+# STAGE 1 - BUILD
+# =============================
 FROM node:18-alpine AS build
 
 LABEL maintainer="Anderson Aguiar"
 
 WORKDIR /usr/src/app
 
-COPY package*json ./
+COPY package*.json ./
 
-RUN apk update
-
-RUN npm install --legacy-peer-deps
+RUN npm ci --legacy-peer-deps
 
 COPY . .
 
 RUN npm run build
 
-<<<<<<< Updated upstream
-ARG PORT
-ARG SOCKETIO_PORT
-ARG WEBSOCKET_PORT
+# =============================
+# STAGE 2 - RUNTIME
+# =============================
+FROM node:18-alpine AS runtime
 
-EXPOSE ${PORT}
-=======
-EXPOSE 3004
->>>>>>> Stashed changes
+WORKDIR /usr/src/app
 
-EXPOSE ${SOCKETIO_PORT}
-
-EXPOSE ${WEBSOCKET_PORT}
+COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY package*.json ./
 
 CMD ["node", "dist/main.js"]
