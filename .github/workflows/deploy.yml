@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main  
+    paths-ignore:
+      - '**/*.md'
 
 jobs:
   deploy:
@@ -53,6 +55,7 @@ jobs:
             JWT_SECRET=${{ secrets.JWT_SECRET }}
             WHATSAPP_API_CONNECT_URL=${{ secrets.WHATSAPP_API_CONNECT_URL }}
             WHATSAPP_API_SEND_MESSAGE_URL=${{ secrets.WHATSAPP_API_SEND_MESSAGE_URL }}
+            SERVER_IP=${{ secrets.SERVER_IP }}
             EOF
 
             echo "🏗️ Construindo imagem..."
