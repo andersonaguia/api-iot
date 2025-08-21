@@ -1,16 +1,8 @@
-import {
-  Body,
-  Controller,
-  DefaultValuePipe,
-  Get,
-  HttpStatus,
-  Param,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { NestResponseBuilder } from 'src/core/http/nest-response-builder';
 import { RelayDataService } from '../services/relay-data.service';
 import { NewRelayStateDto } from '../dto/new-relay-state';
+import { AnyAaaaRecord } from 'dns';
 
 @Controller('/relaydata')
 export class RelayDataController {
@@ -60,10 +52,11 @@ export class RelayDataController {
 
   @Get('/findallrelaystatebycontrollerid/:id')
   async findAllRelayStateByControllerId(@Param('id') controllerId: number) {
-    try {      
-      const result = await this.relayDataService.findAllRelayStateByControllerId(
-        +controllerId,
-      );
+    try {
+      const result =
+        await this.relayDataService.findAllRelayStateByControllerId(
+          +controllerId,
+        );
 
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)
@@ -92,21 +85,37 @@ export class RelayDataController {
     }
   }
 
-  @Get('/findstateforschedule')
-  async findStateForSchedule() {
-    try {    
-      
+  @Post('/findstateforschedule')
+  async findStateForSchedule(
+    @Body()
+    data: {
+      dIn1: boolean;
+      dIn2: boolean;
+      dIn3: boolean;
+      dIn4: boolean;
+      dIn5: boolean;
+      dIn6: boolean;
+      dIn7: boolean;
+      dIn8: boolean;
+    },
+  ) {
+    try {
       const now = new Date();
       const hour = now.getHours();
+      const minute = now.getMinutes();
 
       // Se a hora for >= 17 ou < 6, retorna true, senão false
-      const relaysState = (hour >= 17 || hour < 6);
+      const relaysState = (hour >= 17 && minute >= 20)|| hour < 6;
+      console.log(data.dIn1);
+      console.log(data);
+
+      console.log('RES: ', relaysState && data.dIn1);
 
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)
         .withBody({
           statusCode: HttpStatus.OK,
-          data: relaysState,
+          data: relaysState && data.dIn1,
         })
         .build();
     } catch (error) {
