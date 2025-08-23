@@ -105,9 +105,11 @@ export class RelayDataController {
       const minute = now.getMinutes();
 
       // Se a hora for >= 17 ou < 6, retorna true, senão false
-      const relaysState = (hour >= 17 && minute >= 20)|| hour < 6;
+      const relaysState = hour >= 17 || hour <= 5;
       console.log(data.dIn1);
-      console.log(data);
+      //console.log(data);
+
+      console.log(new Date())
 
       console.log('RES: ', relaysState && data.dIn1);
 
