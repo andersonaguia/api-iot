@@ -11,6 +11,11 @@ services:
     restart: always
     env_file:
       - .env
+    environment:
+      - TZ=America/Sao_Paulo
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     ports:
       - "${PORT}:${PORT}"
       - "${SOCKETIO_PORT}:${SOCKETIO_PORT}"

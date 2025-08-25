@@ -64,7 +64,7 @@ jobs:
             echo "🛑 Derrubando container antigo..."
             docker compose down
 
-            echo "🚀 Subindo novo container com imagem já pronta..."
+            echo "🚀 Subindo novo container..."
             docker compose up -d
 
             echo "🧹 Limpando .env..."

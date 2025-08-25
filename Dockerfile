@@ -20,6 +20,12 @@ RUN npm run build
 # =============================
 FROM node:18-alpine AS runtime
 
+# instala tzdata para suportar timezone
+RUN apk add --no-cache tzdata
+
+# define timezone padrão
+ENV TZ=America/Sao_Paulo
+
 WORKDIR /usr/src/app
 
 COPY --from=build /usr/src/app/dist ./dist
