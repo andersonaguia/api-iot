@@ -102,16 +102,15 @@ export class RelayDataController {
     try {
       const now = new Date();
       const hour = now.getHours();
-      const minute = now.getMinutes();
 
       // Se a hora for >= 17 ou < 6, retorna true, senão false
       const relaysState = hour >= 17 || hour <= 5;
-      console.log(data.dIn1);
-      //console.log(data);
 
-      console.log(new Date())
-
-      console.log('RES: ', relaysState && data.dIn1);
+      console.log('DATETIME: ', now.toLocaleString('pt-BR'));
+      console.log('AUTO MODE: ', data.dIn1);
+      console.log('ALL DIGITAL INPUT STATUS: ', data);
+      console.log('KEEP ON: ', relaysState && data.dIn1);
+      console.log('');      
 
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)
