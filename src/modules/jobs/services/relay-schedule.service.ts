@@ -46,6 +46,10 @@ export class RelayScheduleService  implements OnModuleInit{
     console.log("status: ", this.relayStatus);
     return this.relayStatus;
   }
+
+  setRelayStatus(newStatus: boolean) {
+    this.relayStatus = newStatus;
+  }
 }
 
 

@@ -138,5 +138,46 @@ export class RelayDataController {
         .build();
     }
   }
+
+  @Post('/setRelayStatus')
+  async setRelayStatus(
+    @Body()
+    data: {
+      newStatus: boolean;
+    },
+  ) {
+    try {
+      await this.relayScheduleService.setRelayStatus(data.newStatus);
+
+      const newState = await this.relayScheduleService.getRelayStatus();
+
+      return new NestResponseBuilder()
+        .withStatus(HttpStatus.CREATED)
+        .withBody({
+          statusCode: HttpStatus.CREATED,
+          newStatus: newState
+        })
+        .build();
+    } catch (error) {
+      if (error.code === 404) {
+        return new NestResponseBuilder()
+          .withStatus(HttpStatus.NOT_FOUND)
+          .withBody({
+            statusCode: HttpStatus.NOT_FOUND,
+            detail: error.message,
+          })
+          .build();
+      }
+      return new NestResponseBuilder()
+        .withStatus(HttpStatus.BAD_REQUEST)
+        .withBody({
+          statusCode: HttpStatus.BAD_REQUEST,
+          detail: error.sqlMessage,
+        })
+        .build();
+    }
+  }
 }
+
+
 
