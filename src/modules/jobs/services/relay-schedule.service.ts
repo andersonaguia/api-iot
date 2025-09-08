@@ -29,7 +29,7 @@ export class RelayScheduleService  implements OnModuleInit{
   }
 
   // todos os dias às 17:30
-  @Cron('45 17 * * *') 
+  @Cron('30 17 * * *') 
   setRelayTrue() {
     this.relayStatus = true;
     this.logger.debug('Relay status set to TRUE at 17:45pm');
@@ -43,7 +43,6 @@ export class RelayScheduleService  implements OnModuleInit{
   }
 
   getRelayStatus(): boolean {
-    console.log("status: ", this.relayStatus);
     return this.relayStatus;
   }
 
