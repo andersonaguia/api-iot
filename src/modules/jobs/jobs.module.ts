@@ -3,6 +3,7 @@ import { AlarmMessageService } from './services/alarm-message.service';
 import { AlarmDataModule } from '../alarm-data/alarm-data.module';
 import { ControllersModule } from '../controllers/controllers.module';
 import { HttpModule } from '@nestjs/axios';
+import { RelayScheduleService } from './services/relay-schedule.service';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { HttpModule } from '@nestjs/axios';
     HttpModule,
   ],
   controllers: [],
-  providers: [AlarmMessageService],
-  exports: [],
+  providers: [AlarmMessageService, RelayScheduleService],
+  exports: [RelayScheduleService],
 })
 export class JobsModule {}

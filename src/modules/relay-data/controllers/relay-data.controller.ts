@@ -2,11 +2,14 @@ import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { NestResponseBuilder } from 'src/core/http/nest-response-builder';
 import { RelayDataService } from '../services/relay-data.service';
 import { NewRelayStateDto } from '../dto/new-relay-state';
-import { AnyAaaaRecord } from 'dns';
+import { RelayScheduleService } from '../../jobs/services/relay-schedule.service';
 
 @Controller('/relaydata')
 export class RelayDataController {
-  constructor(private readonly relayDataService: RelayDataService) {}
+  constructor(
+    private readonly relayDataService: RelayDataService,
+    private readonly relayScheduleService: RelayScheduleService,
+  ) {}
 
   @Post('/newrelaystate')
   async newRelayState(@Body() data: NewRelayStateDto) {
@@ -101,16 +104,13 @@ export class RelayDataController {
   ) {
     try {
       const now = new Date();
-      const hour = now.getHours();
-
-      // Se a hora for >= 17 ou < 6, retorna true, senão false
-      const relaysState = hour >= 17 || hour <= 5;
+      const relaysState = this.relayScheduleService.getRelayStatus();
 
       console.log('DATETIME: ', now.toLocaleString('pt-BR'));
       console.log('AUTO MODE: ', data.dIn1);
       console.log('ALL DIGITAL INPUT STATUS: ', data);
       console.log('KEEP ON: ', relaysState && data.dIn1);
-      console.log('');      
+      console.log('');
 
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)
@@ -138,4 +138,46 @@ export class RelayDataController {
         .build();
     }
   }
+
+  @Post('/setRelayStatus')
+  async setRelayStatus(
+    @Body()
+    data: {
+      newStatus: boolean;
+    },
+  ) {
+    try {
+      await this.relayScheduleService.setRelayStatus(data.newStatus);
+
+      const newState = await this.relayScheduleService.getRelayStatus();
+
+      return new NestResponseBuilder()
+        .withStatus(HttpStatus.CREATED)
+        .withBody({
+          statusCode: HttpStatus.CREATED,
+          newStatus: newState
+        })
+        .build();
+    } catch (error) {
+      if (error.code === 404) {
+        return new NestResponseBuilder()
+          .withStatus(HttpStatus.NOT_FOUND)
+          .withBody({
+            statusCode: HttpStatus.NOT_FOUND,
+            detail: error.message,
+          })
+          .build();
+      }
+      return new NestResponseBuilder()
+        .withStatus(HttpStatus.BAD_REQUEST)
+        .withBody({
+          statusCode: HttpStatus.BAD_REQUEST,
+          detail: error.sqlMessage,
+        })
+        .build();
+    }
+  }
 }
+
+
+
