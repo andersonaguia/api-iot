@@ -15,8 +15,8 @@ export class RelayScheduleService  implements OnModuleInit{
     const hour = now.getHours();
     const minute = now.getMinutes();
 
-    // Exemplo: ativo entre 17:30 e 05:30
-    const after1730 = hour > 17 || (hour === 17 && minute >= 30);
+    // Exemplo: ativo entre 17:00 e 05:30
+    const after1730 = hour > 17 || (hour === 17 && minute >= 0);
     const before0530 = hour < 5 || (hour === 5 && minute < 30);
 
     this.relayStatus = after1730 || before0530;
@@ -29,7 +29,7 @@ export class RelayScheduleService  implements OnModuleInit{
   }
 
   // todos os dias às 17:30
-  @Cron('30 17 * * *') 
+  @Cron('00 17 * * *') 
   setRelayTrue() {
     this.relayStatus = true;
     this.logger.debug('Relay status set to TRUE at 17:45pm');
